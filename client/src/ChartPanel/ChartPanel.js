@@ -6,16 +6,17 @@ import LineChart from "../Components/Charts/LineChart/LineChart";
 // import { UserData } from "./ChartData";
 import { UserData } from "./ChartDataAsixMonth";
 import Logo from "../Components/Logo/Logo";
+import DropDownMenu from "../Components/DropDownMenu/DropDownMenu";
 
 function ChartPanel(props) {
-   const { dataChart, setIsLoggedIn, setIsLoggedInName } = props;
+   const { dataChart, setIsLoggedIn, loginStatus, setLoginStatus } = props;
 
   const [chartData, setChartData] = useState({
-    labels: UserData.map((data) => data.e.substr(0,10)),
+    labels: dataChart.map((data) => data.e.substr(0,10)),
     datasets: [
       {
         label: "Chart Month",
-        data: UserData.map((data) => data.v),
+        data: dataChart.map((data) => data.v),
         backgroundColor: [
           "rgba(75,192,192,1)",
           "#ecf0f1",
@@ -65,9 +66,10 @@ function ChartPanel(props) {
     <Container>
       <ContentHeader>
         <Logo/>
-        <Header>{"Logged: " + setIsLoggedInName}</Header>
-        <LoggedOutButton onClick={(e) => setIsLoggedIn(false)}>Log out</LoggedOutButton>
+        <Header>{"Logged: " + loginStatus}</Header>
+        <LoggedOutButton onClick={(e) => (setIsLoggedIn(false), setLoginStatus(""))}>Logout</LoggedOutButton>
       </ContentHeader>
+      <DropDownMenu></DropDownMenu>
       <Row>
         <BarChart chartData={chartData} chartOptions={chartOptions} />
       </Row>
@@ -101,7 +103,7 @@ const ContentHeader = styled.div`
 
 const Header = styled.div`
   color: rgb(0,28,114);
-  font-weight: bold;
+  font-weight: 900;
   font-size: 24px;
   letter-spacing: 1px;
   width: 400px;

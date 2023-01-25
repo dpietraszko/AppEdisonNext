@@ -1,3 +1,0 @@
-C:\Users\pilot\Desktop\Dawid Pietraszko\Raporty\raportTest.txt
-
-Script("RaportVartTable", "22.12.2022, C:\Users\pilot\Desktop\Dawid Pietraszko\Raporty\")

@@ -1,179 +1,108 @@
-// ./src/components/LoginPanel.js
-import React, { useState } from "react";
+// ./src/LoginPanel.js
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { StyledField } from "../Components/Field/Field.styled";
+import Axios from "axios";
+import "../App.css";
 
+export default function Registration(props) {
+  const {title, loginStatus, setLoginStatus, setIsLoggedIn} = props;
 
-const LoginPanel = (props) => {
-  const { text, setIsLoggedIn, setIsLoggedInName } = props;
-
-  const [employeeId, setEmployeeId] = useState(1);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
+  const [employeeId, setEmployeeId] = useState("");
   const [password, setPassword] = useState("");
 
-  const [errors, setErrors] = useState([]);
-  const [isSubmited, setIsSubmited] = useState(false);
+  Axios.defaults.withCredentials = true;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const err = [];
-    if (employeeId.length === 0 || employeeId.length <= 1) {
-      err.push("* Field ID is required!");
-    }
-
-    if (firstName.length === 0 || firstName.length <= 1) {
-      err.push("* First Name is required!");
-    }
-
-    if (lastName.length === 0 || lastName.length <= 1) {
-      err.push("* Last Name is required!");
-    }
-
-    if (!email.includes("@")) {
-      err.push("* Invalid email address!");
-    }
-
-    if (password.length < 6) {
-      err.push("* Password is too short!");
-    }
-
-    if (err.length > 0) {
-      alert("Login failed!");
-    } else {
-      alert("Welcome, you are logged in correctly!");
-
-      setEmployeeId(1)
-      setFirstName("");
-      setLastName("");
-      setEmail("");
-      setPassword("");
-      setIsLoggedIn(true);
-
-      setIsLoggedInName(firstName + " " + lastName);
-    }
-
-    setErrors(err);
-    setIsSubmited(true);
+  const login = () => {
+    Axios.post("http://localhost:3001/login", {
+      id: employeeId,
+      password: password,
+    }).then((response) => {
+      if (response.data.message) {
+        setLoginStatus(response.data.message);
+        setIsLoggedIn(false);
+      } else {
+        setLoginStatus(response.data[0].firstName + " " + response.data[0].lastName);
+        setIsLoggedIn(true);
+      }
+    });
   };
+
+  useEffect(() => {
+    Axios.get("http://localhost:3001/login").then((response) => {
+      if (response.data.loggedIn == true) {
+        setLoginStatus(response.data[0].firstName + " " + response.data[0].lastName);
+        setIsLoggedIn(true);
+      }
+    });
+  }, []);
 
   return (
     <Container>
-      <StyledLoginPanel
-        isSubmited={isSubmited}
-        isValid={isSubmited && errors.length === 0}
-      >
-        <Title>{text}</Title>
-        <form noValidate onSubmit={handleSubmit}>
-          <Row>
-            <Label employeeId="employeeId">Employee Id</Label>
-            <StyledField
-              type="number"
-              name="employeeId"
-              value={employeeId}
-              onChange={(e) => setEmployeeId(e.target.value)}
-            />
-          </Row>
-          <Row>
-            <Label fieldName="firstName">First Name</Label>
-            <StyledField
-              name="firstName"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-          </Row>
-          <Row>
-            <Label fieldName="lastName">Last Name</Label>
-            <StyledField
-              name="lastName"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-          </Row>
-          <Row>
-            <Label fieldName="email">Email</Label>
-            <StyledField
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </Row>
-          <Row>
-            <Label fieldName="password">Password</Label>
-            <StyledField
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Row>
-          <RowWithButton>
-            <Submit />
-          </RowWithButton>
-        </form>
-      </StyledLoginPanel>
-      <ErrorBox>
-        {errors.length > 0 ? <p>{errors.join("\n")}</p> : null}
-      </ErrorBox>
+      <StyledRegistrationPanel>
+      <Title>{title}</Title>
+        <StyledInput
+          type="number"
+          placeholder="Id..."
+          onChange={(e) => {
+            setEmployeeId(e.target.value);
+          }}
+        />
+        <StyledInput
+          type="password"
+          placeholder="Password..."
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
+        />
+        <Button onClick={login}> Login </Button>
+      </StyledRegistrationPanel>
+      <LoginStatus>{loginStatus}</LoginStatus>
     </Container>
   );
-};
+}
 
 const Container = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+`;
+
+const StyledRegistrationPanel = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-`;
-
-const StyledLoginPanel = styled.section`
   background-color: #ffffff;
-  border: 3px solid #e9eaed; //rgb(254,87,22)
+  border: 3px solid #e9eaed;
   padding: 20px;
   margin: 20px;
-  min-width: 350px;
+  min-width: 300px;
 `;
 
-const Title = styled.h3`
+const Title = styled.h2`
   text-align: center;
   color: rgb(0,33,135);
   margin-bottom: 20px;
   font-size: 24px;
 `;
 
-const Row = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin: 5px;
-`;
-
-const RowWithButton = styled(Row)`
-  justify-content: center;
-  margin-top: 20px;
-`;
-
-const Label = styled.label.attrs((props) => ({
-  htmlFor: `field-${props.fieldName}`,
-}))`
-  color: rgb(0,33,135);
-  font-weight: bold;
-  letter-spacing: 1px;
-  width: 140px;
+const StyledInput = styled.input`
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: inset 5px 5px 8px #c4c4c4, inset -5px -5px 8px #ffffff;
+  border: none;
+  width: 180px;
   height: 30px;
-  border-radius: 8px;
-  background: linear-gradient(145deg, #ffffff, #e6e6e6); //fe5716
-  box-shadow: 5px 5px 6px #cccccc, -5px -5px 6px #ffffff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 10px 0 5px 0;
+  margin: 12px;
+  padding-left: 15px;
+  font-size: 14px;
+  &:focus {
+    background: #bce0ff;
+  }
 `;
 
-const Submit = styled.input.attrs(() => ({
-  type: "submit",
-  value: "Log in",
-}))`
+const Button = styled.button`
   font-size: 18px;
   color: rgb(0,33,135);
   font-weight: 900;
@@ -199,10 +128,11 @@ const Submit = styled.input.attrs(() => ({
   }
 `;
 
-const ErrorBox = styled.section`
-  color: red;
-  width: 230px;
-  font-weight: bold;
+const LoginStatus = styled.h1`
+  text-align: center;
+  color: rgb(0,33,135);
+  margin-bottom: 20px;
+  font-size: 24px;
 `;
 
-export default LoginPanel;
+
