@@ -1,5 +1,6 @@
 const express = require("express");
-const mysql = require("mysql");
+// const mysql = require("mysql");
+const mysql = require('mysql2');
 const cors = require("cors");
 
 const bodyParser = require("body-parser");
@@ -34,10 +35,15 @@ app.use(
 );
 
 const db = mysql.createConnection({
-  user: "root",
-  host: "localhost",
-  password: "",
+  user: "dpietraszko",
+  host: "10.56.123.153",
+  password: "WXd1@qrjg#y4igAF",
   database: "liczniki",
+});
+
+db.connect(function(err) {  
+  if (err) throw err;  
+  console.log("Connected MySQL!");  
 });
 
 app.post("/register", (req, res) => {
@@ -103,5 +109,5 @@ app.post("/login", (req, res) => {
 });
 
 app.listen(3001, () => {
-  console.log("running server");
+  console.log("Running Server");
 });

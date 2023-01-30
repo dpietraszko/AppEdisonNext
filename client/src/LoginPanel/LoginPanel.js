@@ -27,14 +27,14 @@ export default function Registration(props) {
     });
   };
 
-  useEffect(() => {
-    Axios.get("http://localhost:3001/login").then((response) => {
-      if (response.data.loggedIn == true) {
-        setLoginStatus(response.data[0].firstName + " " + response.data[0].lastName);
-        setIsLoggedIn(true);
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   Axios.get("http://localhost:3001/login").then((response) => {
+  //     if (response.data.loggedIn == true) {
+  //       setLoginStatus(response.data[0].firstName + " " + response.data[0].lastName);
+  //       setIsLoggedIn(true);
+  //     }
+  //   });
+  // }, []);
 
   return (
     <Container>
@@ -130,7 +130,7 @@ const Button = styled.button`
 
 const LoginStatus = styled.h1`
   text-align: center;
-  color: rgb(0,33,135);
+  color: rgb(255,0,0);
   margin-bottom: 20px;
   font-size: 24px;
 `;

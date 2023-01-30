@@ -1,15 +1,15 @@
-import React, { useState} from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import BarChart from "../Components/Charts/BarChart/BarChart";
 import LineChart from "../Components/Charts/LineChart/LineChart";
 // import PieChart from "../Charts/PieChart/PieChart";   
 // import { UserData } from "./ChartData";
-import { UserData } from "./ChartDataAsixMonth";
+// import { UserData } from "./ChartDataAsixMonth";
 import Logo from "../Components/Logo/Logo";
 import DropDownMenu from "../Components/DropDownMenu/DropDownMenu";
 
 function ChartPanel(props) {
-   const { dataChart, setIsLoggedIn, loginStatus, setLoginStatus } = props;
+  const { dataChart, setIsLoggedIn, loginStatus, setLoginStatus } = props;
 
   const [chartData, setChartData] = useState({
     labels: dataChart.map((data) => data.e.substr(0,10)),

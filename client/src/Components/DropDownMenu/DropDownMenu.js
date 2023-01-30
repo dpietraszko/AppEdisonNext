@@ -1,28 +1,27 @@
 import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
-const DropDownMenu = () => {
+const DropDownMenu = (props) => {
 
     const colorRef = useRef();
-    const [counter, setCounter] = useState("");
-    const [url, setUrl] = useState("");
+    const [variable, setVariable] = useState("");
 
     useEffect(() => {
-        setCounter("No counter selected");
-      },[]);
+      setVariable("No counter selected");
+    },[]);
 
     const handleSubmit = e => {
       e.preventDefault();
       const data = {
-        counter: colorRef.current.value
+        variable: colorRef.current.value
       };
       const json = JSON.stringify(data);
       console.clear();
       console.log(json);
-      setCounter("Charts for " + data.counter);
+      setVariable("Charts for " + data.variable);
 
-      // Zamiast counter1 mozna do url wysyłaś zmienną z licznika energi, zmienną z której dane chcemy uzyskać na wykres.
-      setUrl("http://978-tech-pcpw/asix/v1/variable/archive/processed?name= " + data.counter + "&aggregate=Delta&periodStart=YEAR&periodLength=1MO&resampleInterval=1D");
+      // Zamiast counter1 mozna do url wysyłaś zmienną z licznika energi, zmienną z której dane chcemy uzyskać na wykres. JO976KGW_OPC_PALACZ_KG_LicznikEnergi, JO976KGW_OPC_PALACZ_EnergiaK3
+      // setUrl("http://978-tech-pcpw/asix/v1/variable/archive/processed?name=" + data.variable + "&aggregate=Delta&periodStart=YEAR&periodLength=1MO&resampleInterval=1D");
     };
 
     return (
@@ -32,16 +31,15 @@ const DropDownMenu = () => {
             Select counter:
             <Select ref={colorRef}>
                 <Option value=''>None</Option>
-                <Option value='counter1'>Counter 1</Option>
-                <Option value='counter2'>Counter 2</Option>
+                <Option value='JO976KGW_OPC_PALACZ_EnergiaK3'>Counter 1</Option>
+                <Option value='JO976KGW_OPC_PALACZ_KG_LicznikEnergi'>Counter 2</Option>
                 <Option value='counter3'>Counter 3</Option>
                 <Option value='counter4'>Counter 4</Option>
             </Select>
           </Label>
         </ContentMenu>
         <Button type='submit'>Confirm</Button>
-        <SelectCounter>{counter}</SelectCounter>
-        <TestUrl>{url}</TestUrl>
+        <SelectCounter>{variable}</SelectCounter>
       </Form>
     );
 }
@@ -109,12 +107,6 @@ const SelectCounter = styled.h1`
   font-size: 21px;
   font-weight: bold;
   letter-spacing: 1px;
-`;
-
-const TestUrl = styled.h3`
-  color: rgb(0,0,0);
-  font-size: 16px;
-  margin: 50px 0;
 `;
 
 export default DropDownMenu;

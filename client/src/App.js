@@ -13,7 +13,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [showRegistrationPanel, setShowRegistrationPanel] = useState(false);
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     getData();
@@ -36,7 +36,7 @@ function App() {
     <div className="App">
       {isLoggedIn ? (
         (typeof data.samples !== 'undefined') ? 
-        (<ChartPanel dataChart={data.samples} setIsLoggedIn={setIsLoggedIn} loginStatus={loginStatus} setLoginStatus={setLoginStatus}/>) : 
+        (<ChartPanel dataChart={data.samples} setIsLoggedIn={setIsLoggedIn} loginStatus={loginStatus} setLoginStatus={setLoginStatus}/>) :
         (<></>)
       ) : (
         showRegistrationPanel ? (
