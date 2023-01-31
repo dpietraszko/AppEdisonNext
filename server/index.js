@@ -35,9 +35,13 @@ app.use(
 );
 
 const db = mysql.createConnection({
-  user: "dpietraszko",
-  host: "10.56.123.153",
-  password: "WXd1@qrjg#y4igAF",
+  // user: "dpietraszko",
+  // host: "10.56.123.153",
+  // password: "WXd1@qrjg#y4igAF",
+  // database: "liczniki",
+  user: "root",
+  host: "localhost",
+  password: "",
   database: "liczniki",
 });
 

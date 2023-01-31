@@ -1,47 +1,63 @@
 import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
+import Counter from "../Counter/Counter";
 
 const DropDownMenu = (props) => {
+  const { isLoggedIn, setDataAPI } = props;
 
-    const colorRef = useRef();
-    const [variable, setVariable] = useState("");
 
-    useEffect(() => {
-      setVariable("No counter selected");
-    },[]);
+  const colorRef = useRef();
+  const [variable, setVariable] = useState("Counter selected: JO976KGW_OPC_PALACZ_EnergiaK3");
+  const [url, setUrl] = useState("http://978-tech-pcpw/asix/v1/variable/archive/processed?name=JO976KGW_OPC_PALACZ_EnergiaK3&aggregate=Delta&periodStart=YEAR&periodLength=1MO&resampleInterval=1D");
 
-    const handleSubmit = e => {
-      e.preventDefault();
-      const data = {
-        variable: colorRef.current.value
-      };
-      const json = JSON.stringify(data);
-      console.clear();
-      console.log(json);
-      setVariable("Charts for " + data.variable);
+  useEffect(() => {
+    getDataAPI(url);
+    // eslint-disable-next-line
+  },[Counter(5) === 5 && isLoggedIn === true]);
 
-      // Zamiast counter1 mozna do url wysyłaś zmienną z licznika energi, zmienną z której dane chcemy uzyskać na wykres. JO976KGW_OPC_PALACZ_KG_LicznikEnergi, JO976KGW_OPC_PALACZ_EnergiaK3
-      // setUrl("http://978-tech-pcpw/asix/v1/variable/archive/processed?name=" + data.variable + "&aggregate=Delta&periodStart=YEAR&periodLength=1MO&resampleInterval=1D");
+// API -------------------------------------------------------------------------- //
+
+  const getDataAPI = (urlAPI) => {
+    // const url = "http://978-tech-pcpw/asix/v1/variable/archive/processed?name=JO976KGW_OPC_PALACZ_EnergiaK3&aggregate=Delta&periodStart=YEAR&periodLength=1MO&resampleInterval=1D";
+    // const url = "http://978-tech-pcpw/asix/v1/variable/archive/processed?name=JO976KGW_OPC_PALACZ_KG_LicznikEnergi&aggregate=Delta&periodStart=YEAR&periodLength=1MO&resampleInterval=1D";
+
+    fetch(urlAPI)
+    .then((response) => response.json())
+    .then((json) => {
+      setDataAPI(json);
+    })
+  }
+//------------------------------------------------------------------------------- //
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    const data = {
+      variable: colorRef.current.value
     };
+    const json = JSON.stringify(data);
+    console.clear();
+    console.log(json);
+    setVariable("Counter selected: "+ data.variable);
+    setUrl("http://978-tech-pcpw/asix/v1/variable/archive/processed?name=" + data.variable + "&aggregate=Delta&periodStart=YEAR&periodLength=1MO&resampleInterval=1D");
+  };
 
-    return (
-      <Form onSubmit={handleSubmit}>
-        <ContentMenu>
-          <Label>
-            Select counter:
-            <Select ref={colorRef}>
-                <Option value=''>None</Option>
-                <Option value='JO976KGW_OPC_PALACZ_EnergiaK3'>Counter 1</Option>
-                <Option value='JO976KGW_OPC_PALACZ_KG_LicznikEnergi'>Counter 2</Option>
-                <Option value='counter3'>Counter 3</Option>
-                <Option value='counter4'>Counter 4</Option>
-            </Select>
-          </Label>
-        </ContentMenu>
-        <Button type='submit'>Confirm</Button>
-        <SelectCounter>{variable}</SelectCounter>
-      </Form>
-    );
+  return (
+    <Form onSubmit={handleSubmit}>
+      <ContentMenu>
+        <Label>
+          Select counter:
+          <Select ref={colorRef}>
+              <Option value='JO976KGW_OPC_PALACZ_EnergiaK3'>Counter 1</Option>
+              <Option value='JO976KGW_OPC_PALACZ_KG_LicznikEnergi'>Counter 2</Option>
+              <Option value='JO976KGW_OPC_PALACZ_EnergiaK3'>Counter 3</Option>
+              <Option value='FQ_R11L'>Counter 4</Option>
+          </Select>
+        </Label>
+      </ContentMenu>
+      <Button type='submit'>Confirm</Button>
+      <SelectCounter>{variable}</SelectCounter>
+    </Form>
+  );
 }
 
 const Form = styled.form`
