@@ -9,7 +9,7 @@ import LoginPanel from "./LoginPanel/LoginPanel";
 function App() {
 
   const [loginStatus, setLoginStatus] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   const [showRegistrationPanel, setShowRegistrationPanel] = useState(false);
 

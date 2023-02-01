@@ -18,9 +18,7 @@ const DropDownMenu = (props) => {
 // API -------------------------------------------------------------------------- //
 
   const getDataAPI = (urlAPI) => {
-    // const url = "http://978-tech-pcpw/asix/v1/variable/archive/processed?name=JO976KGW_OPC_PALACZ_EnergiaK3&aggregate=Delta&periodStart=YEAR&periodLength=1MO&resampleInterval=1D";
-    // const url = "http://978-tech-pcpw/asix/v1/variable/archive/processed?name=JO976KGW_OPC_PALACZ_KG_LicznikEnergi&aggregate=Delta&periodStart=YEAR&periodLength=1MO&resampleInterval=1D";
-
+    
     fetch(urlAPI)
     .then((response) => response.json())
     .then((json) => {
